@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { FaTrash } from "react-icons/fa";
-
+import { useCart } from "../../CartContext/cartContext";
 const CartContainer = styled.div`
   position: fixed;
   top: 0;
@@ -81,6 +81,9 @@ const Total = styled.div`
   font-weight: bold;
   color: #ffebd9;
   font-family: Arial, sans-serif;
+  display: flex;
+  justify-content: space-between;
+  align-items: center; /* Isso alinha verticalmente os itens no centro */
 `;
 
 const CloseButton = styled.button`
@@ -108,7 +111,7 @@ const ContinueButton = styled.button`
   height: 24px;
   padding: 4px 16px;
   cursor: pointer;
-  margin-top: 10px;
+  margin-top: 17px;
   width: 100%;
   font-weight: 700;
   font-family: Arial, sans-serif;
@@ -200,8 +203,9 @@ const ErrorMessage = styled.span`
   margin-bottom: 10px;
 `;
 
-const Cart = ({ items, onClose, removeFromCart }) => {
-  const totalPrice = items.reduce((total, item) => total + item.preco, 0);
+const Cart = ({ onClose }) => {
+  const { cartItems, removeFromCart } = useCart();
+  const totalPrice = cartItems.reduce((total, item) => total + item.preco, 0);
   const [showDeliveryForm, setShowDeliveryForm] = useState(false);
   const [showConfirmationMessage, setShowConfirmationMessage] = useState(false);
   const [orderId, setOrderId] = useState("");
@@ -306,13 +310,13 @@ const Cart = ({ items, onClose, removeFromCart }) => {
   };
 
   const handleFinishOrder = () => {
-    if (!items || items.length === 0) {
+    if (!cartItems || cartItems.length === 0) {
       console.error("O carrinho está vazio.");
       return;
     }
 
     const orderData = {
-      products: items.map((item) => ({
+      products: cartItems.map((item) => ({
         id: item.id,
         nome: item.nome,
         price: item.preco,
@@ -561,7 +565,7 @@ const Cart = ({ items, onClose, removeFromCart }) => {
             </Form>
           ) : (
             <>
-              {items.map((item, index) => (
+              {cartItems.map((item, index) => (
                 <ItemContainer key={index}>
                   <Item>
                     <ItemImage src={item.foto} alt={item.nome} />
@@ -576,11 +580,12 @@ const Cart = ({ items, onClose, removeFromCart }) => {
                 </ItemContainer>
               ))}
               <Total>
-                Valor Total: R$ {totalPrice.toFixed(2)}
-                <ContinueButton onClick={handleContinueToDelivery}>
-                  Continuar com a entrega
-                </ContinueButton>
+                <span>Valor Total:</span>
+                <span>R$ {totalPrice.toFixed(2)}</span>
               </Total>
+              <ContinueButton onClick={handleContinueToDelivery}>
+                Continuar com a entrega
+              </ContinueButton>
             </>
           )}
         </>

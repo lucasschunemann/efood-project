@@ -3,6 +3,7 @@ import styled from "styled-components";
 import Logo2 from "../../images/logo.png";
 import BackgroundImage from "../../images/Vector.png";
 import Cart from "../Cart";
+import { useCart } from "../../CartContext/cartContext";
 
 const HeaderContainer = styled.div`
   height: 186px;
@@ -19,6 +20,15 @@ const HeaderContainer = styled.div`
     justify-content: space-evenly;
     padding: 20px 40px;
   }
+`;
+const Overlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5); // opacidade do fundo
+  z-index: 999; // abaixo do carrinho, mas acima do resto
 `;
 
 const Logo = styled.img`
@@ -62,7 +72,7 @@ const CartInfo = styled.div`
 
 const Header = () => {
   const [cartOpen, setCartOpen] = useState(false);
-  const [cartItems, setCartItems] = useState([]);
+  const { cartItems } = useCart();
 
   const toggleCart = () => {
     setCartOpen(!cartOpen);
@@ -81,7 +91,12 @@ const Header = () => {
           {cartItems.length} produto(s) no carrinho
         </CartInfo>
       </HeaderContainer>
-      {cartOpen && <Cart items={cartItems} onClose={closeCart} />}
+      {cartOpen && (
+        <>
+          <Overlay onClick={closeCart} /> {/* fecha carrinho ao clicar fora */}
+          <Cart items={cartItems} onClose={closeCart} />
+        </>
+      )}
     </>
   );
 };

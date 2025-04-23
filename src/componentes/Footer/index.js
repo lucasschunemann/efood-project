@@ -62,7 +62,7 @@ const Footer = () => {
   return (
     <FooterContainer>
       <div>
-        <Logo src={logo} alt="Logo" />
+        <Logo src={logo} alt="Logoo" />
       </div>
       <SocialIcons>
         <Icon>

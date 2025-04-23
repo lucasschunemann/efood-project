@@ -4,6 +4,7 @@ import styled from "styled-components";
 import Cart from "../Cart";
 import Header2 from "../Header2";
 import RestaurantImage from "./restaruranteImage";
+import { useCart } from "../../CartContext/cartContext"; // <- importa o provider
 
 const MenuItemCard = styled.div`
   overflow: hidden;
@@ -15,6 +16,15 @@ const MenuItemCard = styled.div`
   margin-bottom: -40px;
   margin-top: 70px;
   margin-right: 60px;
+`;
+const Overlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5); // fundo escuro
+  z-index: 999;
 `;
 
 const CardImage = styled.img`
@@ -163,7 +173,8 @@ const RestaurantDetailsPage = () => {
   const [restaurantName, setRestaurantName] = useState("");
   const [restaurantFoodType, setRestaurantFoodType] = useState("");
   const [selectedItem, setSelectedItem] = useState(null);
-  const [cartItems, setCartItems] = useState([]);
+  const { addToCart, removeFromCart, cartItems } = useCart();
+
   const [cartOpen, setCartOpen] = useState(false);
 
   useEffect(() => {
@@ -189,16 +200,10 @@ const RestaurantDetailsPage = () => {
     setSelectedItem(null);
   };
 
-  const addToCart = () => {
-    setCartItems([...cartItems, selectedItem]);
+  const handleAddToCart = () => {
+    addToCart(selectedItem);
     setCartOpen(true);
     closeModal();
-  };
-
-  const removeFromCart = (index) => {
-    const newCartItems = [...cartItems];
-    newCartItems.splice(index, 1);
-    setCartItems(newCartItems);
   };
 
   return (
@@ -238,7 +243,7 @@ const RestaurantDetailsPage = () => {
                 {selectedItem.descricao}
               </ItemDescriptionModal>
               <ItemPriceModal>Serve: {selectedItem.porcao}</ItemPriceModal>
-              <AddToCartButtonModal onClick={addToCart}>
+              <AddToCartButtonModal onClick={handleAddToCart}>
                 Adicionar ao Carrinho - R$ {selectedItem.preco}0
               </AddToCartButtonModal>
             </div>
@@ -246,11 +251,14 @@ const RestaurantDetailsPage = () => {
         </Modal>
       )}
       {cartOpen && (
-        <Cart
-          items={cartItems}
-          onClose={closeCart}
-          removeFromCart={removeFromCart}
-        />
+        <>
+          <Overlay onClick={closeCart} />
+          <Cart
+            items={cartItems}
+            onClose={closeCart}
+            removeFromCart={removeFromCart}
+          />
+        </>
       )}
     </div>
   );
