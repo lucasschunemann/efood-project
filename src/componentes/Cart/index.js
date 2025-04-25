@@ -10,7 +10,7 @@ const CartContainer = styled.div`
   height: 100%;
   background-color: #e66767;
   box-shadow: -2px 0 5px rgba(0, 0, 0, 0.2);
-  padding: 20px;
+  padding: 15px;
   z-index: 999;
   display: flex;
   flex-direction: column;
@@ -26,27 +26,36 @@ const Title = styled.h2`
 const ItemContainer = styled.div`
   background-color: #ffebd9;
   padding: 12px;
+  height: 110px;
   width: 289px;
   margin-left: -5px;
-  height: 100px;
-  margin-bottom: 12px;
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
 `;
 
 const Item = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  width: 100%;
 `;
 
 const ItemDetails = styled.div`
   display: flex;
   flex-direction: column;
 `;
+const ItemInfoWrapper = styled.div`
+  display: flex;
+  align-items: center;
+`;
 
 const ItemName = styled.p`
   font-weight: bold;
   color: #e66767;
   font-family: "Roboto", sans-serif;
+  margin-bottom: 45px;
+  width: full;
 `;
 
 const ItemPrice = styled.p`
@@ -71,8 +80,8 @@ const MessageTitle = styled.p`
 `;
 
 const ItemImage = styled.img`
-  width: 80px;
-  height: 80px;
+  width: 110px;
+  height: 110px;
   margin-right: 12px;
 `;
 
@@ -101,7 +110,7 @@ const RemoveItemButton = styled.button`
   background-color: transparent;
   border: none;
   cursor: pointer;
-  margin-top: 80px;
+  margin-top: 98px;
 `;
 
 const ContinueButton = styled.button`
@@ -368,7 +377,6 @@ const Cart = ({ onClose }) => {
 
   return (
     <CartContainer>
-      <CloseButton onClick={onClose}>X</CloseButton>
       {orderId ? (
         <div>
           <MessageTitle>Pedido realizado - {orderId}</MessageTitle>
@@ -568,11 +576,13 @@ const Cart = ({ onClose }) => {
               {cartItems.map((item, index) => (
                 <ItemContainer key={index}>
                   <Item>
-                    <ItemImage src={item.foto} alt={item.nome} />
-                    <ItemDetails>
-                      <ItemName>{item.nome}</ItemName>
-                      <ItemPrice>R$ {item.preco.toFixed(2)}</ItemPrice>
-                    </ItemDetails>
+                    <ItemInfoWrapper>
+                      <ItemImage src={item.foto} alt={item.nome} />
+                      <ItemDetails>
+                        <ItemName>{item.nome}</ItemName>
+                        <ItemPrice>R$ {item.preco.toFixed(2)}</ItemPrice>
+                      </ItemDetails>
+                    </ItemInfoWrapper>
                     <RemoveItemButton onClick={() => removeFromCart(index)}>
                       <FaTrash color="#ff5733" />
                     </RemoveItemButton>
