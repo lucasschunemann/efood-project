@@ -6,7 +6,7 @@ const CartContainer = styled.div`
   position: fixed;
   top: 0;
   right: 0;
-  width: 300px;
+  width: 360px;
   height: 100%;
   background-color: #e66767;
   box-shadow: -2px 0 5px rgba(0, 0, 0, 0.2);
@@ -26,8 +26,8 @@ const Title = styled.h2`
 const ItemContainer = styled.div`
   background-color: #ffebd9;
   padding: 12px;
-  height: 110px;
-  width: 289px;
+  height: 100px;
+  width: 344px;
   margin-left: -5px;
   margin-bottom: 14px;
   display: flex;
@@ -48,14 +48,6 @@ const ItemDetails = styled.div`
 const ItemInfoWrapper = styled.div`
   display: flex;
   align-items: center;
-`;
-
-const ItemName = styled.p`
-  font-weight: bold;
-  color: #e66767;
-  font-family: "Roboto", sans-serif;
-  margin-bottom: 45px;
-  width: full;
 `;
 
 const ItemPrice = styled.p`
@@ -80,9 +72,17 @@ const MessageTitle = styled.p`
 `;
 
 const ItemImage = styled.img`
-  width: 110px;
-  height: 110px;
+  width: 80px;
+  height: 80px;
   margin-right: 12px;
+`;
+const ItemName = styled.p`
+  font-weight: bold;
+  color: #e66767;
+  font-family: "Roboto", sans-serif;
+  margin-bottom: 20px;
+  font-size: 18px;
+  width: full;
 `;
 
 const Total = styled.div`
