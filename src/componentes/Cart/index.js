@@ -290,7 +290,31 @@ const Cart = ({ onClose }) => {
 
   const handleSubmitPayment = (e) => {
     e.preventDefault();
-    handleFinishOrder();
+
+    const errors = {};
+
+    if (!cardData.cardName) {
+      errors.cardName = "Nome no cartão é obrigatório.";
+    }
+    if (!cardData.cardNumber) {
+      errors.cardNumber = "Número do cartão é obrigatório.";
+    }
+    if (!cardData.cvv) {
+      errors.cvv = "CVV é obrigatório.";
+    }
+    if (!cardData.mes) {
+      errors.mes = "Mês de vencimento é obrigatório.";
+    }
+    if (!cardData.ano) {
+      errors.ano = "Ano de vencimento é obrigatório.";
+    }
+
+    setCardFormErrors(errors);
+
+    // Só finaliza o pedido se NÃO tiver erros
+    if (Object.keys(errors).length === 0) {
+      handleFinishOrder();
+    }
   };
 
   const validateDeliveryForm = () => {
@@ -298,7 +322,9 @@ const Cart = ({ onClose }) => {
     const nomeRegex = /^[a-zA-Z\s]*$/;
     const cepRegex = /^\d{5}-\d{3}$/;
     const numeroRegex = /^\d+$/;
-
+    if (!formData.nome) {
+      errors.nome = "Nome é obrigatório.";
+    }
     if (!formData.nome.match(nomeRegex)) {
       errors.nome = "O nome não pode conter números";
     }
@@ -455,7 +481,7 @@ const Cart = ({ onClose }) => {
                   <SobInputs> Mês de vencimento </SobInputs>
                   <InputComplemento
                     type="text"
-                    name="mes-vencimento"
+                    name="mes"
                     placeholder=""
                     value={cardData.mes}
                     onChange={handleCardInputChange}
@@ -468,7 +494,7 @@ const Cart = ({ onClose }) => {
                   <SobInputs> Ano de vencimento</SobInputs>
                   <InputCep
                     type="text"
-                    name="ano-vencimento"
+                    name="ano"
                     placeholder=""
                     value={cardData.ano}
                     onChange={handleCardInputChange}
@@ -563,11 +589,11 @@ const Cart = ({ onClose }) => {
                 <ErrorMessage>{formErrors.complemento}</ErrorMessage>
               )}
               <ButtonContainer>
-                <ContinueButton onClick={handleBackToCart}>
-                  Voltar para o carrinho
-                </ContinueButton>
                 <ContinueButton type="submit">
                   Continuar com o pagamento
+                </ContinueButton>
+                <ContinueButton onClick={handleBackToCart}>
+                  Voltar para o carrinho
                 </ContinueButton>
               </ButtonContainer>
             </Form>
